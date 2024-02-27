@@ -1,0 +1,14 @@
+//
+//  Constants.swift
+//  Shutterstock API
+//
+//  Created by Macbook Air 2017 on 27. 2. 2024..
+//
+
+import Foundation
+
+let SHUTTERSTOCK_API_TOKEN = "v2/SGZKZmIzWWpCYnloWVIzMFl3bmlBdlgzcUxUNVBUcEgvNDIzODI3NTg5L2N1c3RvbWVyLzQvR2ZDRGswODBjbVkxaHl3MC0tU3dDRFl5TEVfakJuMG9wcEdhQ21VM25JQ0ZQVHNzZXlRNGFUcVVGdThmMWU0ZUVmLXp4aGNyTVZiQlZ6czdZZ2xUVllzTzlEZkJ4QWdOa0Nkc3dnY2I1ZC01ellER0xodm9faUlDdTFVRnJZTXJnaHgyVXExRGxWQXlINkFYODY2VnhZUEFIVkNhRnNYRnE3VEdodk5BWnROUnpWeDE4M3hBMktfNWFyR19Na1NacWhXTThsWkNZQnpnX2lYSWkwa0Vvdy9BSWo5VDNFUVlpaFZBdjlLZ3RsZUNR"
+
+let SHUTTERSTOCK_API = "https://api.shutterstock.com"
+
+let GET_IMAGES_ENDPOINT = "/v2/images/search"

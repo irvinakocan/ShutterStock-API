@@ -8,12 +8,21 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    var photos = [ShutterstockData]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        view.backgroundColor = .systemPurple
+        
+        getPhotos()
     }
-
-
+    
+    private func getPhotos() {
+        APICaller.getPhotos(completion: {[weak self] response in
+            self?.photos.append(contentsOf: response?.data ?? [])
+        })
+    }
 }
 
