@@ -16,6 +16,7 @@
 		248B02A02B8E416B001F3807 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248B029F2B8E416B001F3807 /* Constants.swift */; };
 		248B02A22B8E4215001F3807 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248B02A12B8E4215001F3807 /* APICaller.swift */; };
 		248B02A42B8E4F90001F3807 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248B02A32B8E4F90001F3807 /* Models.swift */; };
+		248B02A62B8E5B05001F3807 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248B02A52B8E5B05001F3807 /* PhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		248B029F2B8E416B001F3807 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		248B02A12B8E4215001F3807 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		248B02A32B8E4F90001F3807 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		248B02A52B8E5B05001F3807 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				248B029F2B8E416B001F3807 /* Constants.swift */,
 				248B02A32B8E4F90001F3807 /* Models.swift */,
 				248B02A12B8E4215001F3807 /* APICaller.swift */,
+				248B02A52B8E5B05001F3807 /* PhotoCollectionViewCell.swift */,
 				248B028F2B8E3BF5001F3807 /* ViewController.swift */,
 				248B02912B8E3BF5001F3807 /* Main.storyboard */,
 				248B02942B8E3BF9001F3807 /* Assets.xcassets */,
@@ -151,6 +154,7 @@
 				248B028C2B8E3BF5001F3807 /* AppDelegate.swift in Sources */,
 				248B028E2B8E3BF5001F3807 /* SceneDelegate.swift in Sources */,
 				248B02A42B8E4F90001F3807 /* Models.swift in Sources */,
+				248B02A62B8E5B05001F3807 /* PhotoCollectionViewCell.swift in Sources */,
 				248B02A22B8E4215001F3807 /* APICaller.swift in Sources */,
 				248B02A02B8E416B001F3807 /* Constants.swift in Sources */,
 			);

@@ -14,7 +14,7 @@ class APICaller {
         var urlComponents = URLComponents(string: SHUTTERSTOCK_API + GET_IMAGES_ENDPOINT)
         
         urlComponents?.queryItems = [
-            URLQueryItem(name: "query", value: "happy people love couple smile"),
+            URLQueryItem(name: "query", value: "green leaf forest tree"),
             URLQueryItem(name: "orientation", value: "horizontal"),
             URLQueryItem(name: "sort", value: "popular"),
             URLQueryItem(name: "per_page", value: "20")
@@ -49,6 +49,19 @@ class APICaller {
                 }
                 completion(decodedData)
             }
+        })
+        task.resume()
+    }
+    
+    static func getPhotoData(url: String, completion: @escaping (Data?) -> Void) {
+        
+        guard let url = URL(string: url) else {
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url, completionHandler: {
+            data, response, error in
+            completion(data)
         })
         task.resume()
     }
