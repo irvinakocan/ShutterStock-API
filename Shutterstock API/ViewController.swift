@@ -23,6 +23,9 @@ class ViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero,
                                               collectionViewLayout: layout)
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        collectionView.register(FooterCollectionReusableView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                withReuseIdentifier: FooterCollectionReusableView.identifier)
         return collectionView
     }()
 
@@ -73,5 +76,39 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         }
         cell.configure(photo: photo)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+     
+        let footer = collectionView.dequeueReusableSupplementaryView(
+            ofKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: FooterCollectionReusableView.identifier,
+            for: indexPath)
+        return footer
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.size.width,
+                      height: 50)
+    }
+}
+
+// Checking scroll position
+extension ViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if position > (collectionView.contentSize.height - scrollView.frame.size.height) {
+            
+            guard APICaller.isPaginating == false else {
+                return
+            }
+                                        
+            APICaller.getPhotos(pagination: true, completion: { [weak self] response in
+                self?.photos.append(contentsOf: response?.data ?? [])
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            })
+        }
     }
 }
