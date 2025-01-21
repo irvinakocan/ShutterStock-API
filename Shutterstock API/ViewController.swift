@@ -20,31 +20,17 @@ class ViewController: UIViewController {
                                            left: 5,
                                            bottom: 5,
                                            right: 5)
-        let collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
-        collectionView.register(FooterCollectionReusableView.self,
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-                                withReuseIdentifier: FooterCollectionReusableView.identifier)
+        collectionView.register(FooterCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterCollectionReusableView.identifier)
         return collectionView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        view.backgroundColor = .black
         
-        getPhotos()
         setCollectionView()
-    }
-    
-    private func getPhotos() {
-        APICaller.getPhotos(completion: {[weak self] response in
-            self?.photos.append(contentsOf: response?.data ?? [])
-            DispatchQueue.main.async {
-                self?.collectionView.reloadData()
-            }
-        })
     }
     
     private func setCollectionView() {
@@ -54,59 +40,69 @@ class ViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        collectionView.frame = view.bounds
     }
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let photo = photos[indexPath.row]
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.configure(photo: photo)
+        cell.configure(photo: photos[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-     
-        let footer = collectionView.dequeueReusableSupplementaryView(
-            ofKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: FooterCollectionReusableView.identifier,
-            for: indexPath)
-        return footer
+        
+        if kind == UICollectionView.elementKindSectionFooter, APICaller.isPaginating {
+            let footer = collectionView.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionFooter,
+                withReuseIdentifier: FooterCollectionReusableView.identifier,
+                for: indexPath)
+            return footer
+        }
+        
+        return UICollectionReusableView()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.size.width,
-                      height: 50)
+        if APICaller.isPaginating {
+            // Show the footer with a height of 60 when paginating
+            return CGSize(width: view.frame.size.width, height: 60)
+        } else {
+            // Remove the footer by setting its height to 0
+            return CGSize(width: 0, height: 0)
+        }
     }
 }
 
-// Checking scroll position
 extension ViewController: UIScrollViewDelegate {
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
         let position = scrollView.contentOffset.y
-        if position > (collectionView.contentSize.height - scrollView.frame.size.height) {
+        
+        guard APICaller.isPaginating == false else {
+            return
+        }
+        
+        // Reloading the layout to reload the footer
+        collectionView.collectionViewLayout.invalidateLayout()
+        
+        if position >= collectionView.contentSize.height - scrollView.frame.size.height {
             
-            guard APICaller.isPaginating == false else {
-                return
-            }
-                                        
-            APICaller.getPhotos(pagination: true, completion: { [weak self] response in
-                self?.photos.append(contentsOf: response?.data ?? [])
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadData()
+            APICaller.getPhotos(completion: { [weak self] response in
+                if let response = response {
+                    self?.photos.append(contentsOf: response.data)
+                    DispatchQueue.main.async {
+                        self?.collectionView.reloadData()
+                        self?.collectionView.collectionViewLayout.invalidateLayout()
+                    }
                 }
             })
         }

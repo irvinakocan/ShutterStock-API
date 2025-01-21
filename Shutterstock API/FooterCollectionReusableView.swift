@@ -13,7 +13,7 @@ class FooterCollectionReusableView: UICollectionReusableView {
     
     public let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
-        spinner.color = .green
+        spinner.color = .purple
         spinner.startAnimating()
         return spinner
     }()
